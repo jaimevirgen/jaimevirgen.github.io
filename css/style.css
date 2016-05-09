@@ -68,7 +68,128 @@ table{
     $MAIN
 \*------------------------------------*/
 
-html{
-    background-color: lightgrey;
+html,body {
+    background-color: #ffffff;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+@font-face {
+      font-family: "ClearSansThin";
+      src: url("http://jaimevirgen.com/css/ClearSans-Thin.ttf") format('truetype');
+    }
+
+body { font-family: "ClearSansThin", helvetica, arial, sans-serif; font-weight: 100; }
+
+html,body { height: 100%; margin: 0px; padding: 0px; }
+
+a, a:hover, a:active, a:link {color: #000; text-decoration: none;}
+
+
+.globalFrame {
+    box-sizing: border-box;
+    border-color: #fff;
+    border-width: 1em;
+    border-style: solid;
+    min-height: 100%;
+    background: url(http://jaimevirgen.com/img/bg.jpg) no-repeat center center fixed;
+    /*background-color: grey;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.wrapperFrame{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  font-weight: bold;
+  text-align: center;
+  width: 500px;
+  margin: auto auto;
+}
+
+.wrapperFrame > * {
+  padding: 10px;
+  flex: 1 100%;
+  font-weight: 100;
+}
+
+article {
+	background-color: #fff;
+	text-align: left;
+}
+
+/* FOOTER */
+
+.footer {
+  background: white;
+  font-size: 0.75em;
+  margin-bottom: 50px;
+}
+
+
+/* HEADER */
+.header {
+  margin-top: 50px;
+  background-color: rgba(255,255,255,1);
+  font-weight: 800;
+}
+
+.headerRuler {
+    width: 50%;
+    margin: auto auto;
+    margin-top: 10px;
+}
+
+
+.fade-in {
+    opacity: 0;
+    -webkit-animation: fade-in 1.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: fade-in 1.5s forwards, slide-down 1.5s forwards;
+    animation-delay: 0.5s;
+}
+
+@-webkit-keyframes fade-in {
+    0%    { opacity: 0; transform: translateY(-15px); }
+    100%  { opacity: 100; transform: translateY(0px); }
+}
+
+@keyframes fade-in {
+   0%   { opacity: 0; transform: translateY(-15px); }
+   100% { opacity: 100; transform: translateY(0px); }
+}
+
+.fade{
+    opacity: 0;
+    -webkit-animation: fade 2s forwards;
+    -webkit-animation-delay: 1.5s;
+    animation: fade 2s forwards;
+    animation-delay: 1.5s;
+}
+
+@keyframes fade {
+   0%   { opacity: 0; }
+   100% { opacity: 100; }
+}
+
+.navButton {
+  font-size: 0.85em;
+  font-weight: 100;
+  color: rgba(0,0,0,0.33);
+  padding: 5px;
+    opacity: 0;
+    -webkit-animation: fade 2s forwards;
+    -webkit-animation-delay: 1.5s;
+    animation: fade 2s forwards;
+    animation-delay: 1.5s;
 }
 
