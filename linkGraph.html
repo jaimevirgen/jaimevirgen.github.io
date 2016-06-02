@@ -135,7 +135,7 @@ function tick() {
 
 // Color leaf nodes orange, and packages white or blue.
 function color(d) {
-	var stateColour = d.size > 17000 ? "#c0f488" : "#fd3c4c"
+	var stateColour = d.size > 17000 ? "#fd3c4c" : "#c0f488";
   return d._children ? "#3182bd" : d.children ? "#ffb646" : stateColour;
 }
 
