@@ -72,7 +72,7 @@ var svg = d3.select("body").append("svg")
 var link = svg.selectAll(".link"),
     node = svg.selectAll(".node");
 
-d3.json(getGraphData(), function(error, json) {
+d3.json("miserables.json", function(error, json) {
   if (error) throw error;
 
   root = json;
