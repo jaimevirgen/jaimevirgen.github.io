@@ -101,7 +101,8 @@ function update() {
       .attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
+      .attr("y2", function(d) { return d.target.y; })
+      .style("opacity", 0.25);
 
   // Update the nodes…
   node = node.data(nodes, function(d) { return d.id; }).style("fill", color);
@@ -124,6 +125,7 @@ function tick() {
   link.attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; })
       .attr("y2", function(d) { return d.target.y; });
 
   node.attr("cx", function(d) { return d.x; })
