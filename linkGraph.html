@@ -21,20 +21,45 @@
 <script>
 
 let apiResponse = {
-	pageResp : {
-		pageId : "page1",
-		pagePath : "path/a/b",
-		pageLinks : [
-			{
-				linkId: "link1",
-				linkDestination: "url/e/n/d",
-				linkStatus: 301,
-				indexable: true,
-				permission: {},
-				linkText: "Something out of context"
-			}
-		]
-	}
+    pages: [
+        {
+            title: 'Documentation',
+            path: '/Documentation',
+            count: 5,
+            brokencount: 2,
+            redirectcount: 2,
+            externalcount: 1,
+            links: [
+                {
+                    href: '/Documentation/Branding_Responsive',
+                    type: 'internal',
+                    to: '/Documentation/Branding_Responsive_2',
+                    status: 302,
+                    query: {
+                        'mt-learningpath': 'branding',
+                        'utm-source': 'twitter',
+                        'productId': 1
+                    }
+                    text: 'Branding Responsive is cool',
+                    indexable: true
+                },
+                {
+                    href: 'http://google.com',
+                    type': 'external',
+                    status: 200, (maybe, if it's not too intensive)
+                    indexable': false,
+                    text': 'they who must not be named'
+                },
+                {
+                    href: '/Documentation/Burp',
+                    type: 'internal',
+                    status: 404,
+                    text: 'This is but a dream',
+                    indexable: true
+                }
+            ]
+        }
+    ]
 };
 
 function getGraphData(response) {
