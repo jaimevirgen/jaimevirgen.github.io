@@ -38,7 +38,8 @@ d3.csv("test.csv", type, function(error, data) {
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
 
-  var color = d3.scaleOrdinal(d3.schemeCategory10).domain([0,10000]);
+  var color = d3.scaleRainbow();
+  color.domain([0, 10000]);
 
   pack(root);
 
