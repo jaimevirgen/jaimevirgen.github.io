@@ -39,7 +39,10 @@ d3.csv("test.csv", type, function(error, data) {
       .sort(function(a, b) { return b.value - a.value; });
 
   // var color = d3.scaleMagma();
-  var color = d3.category20c();
+  // color.domain([0, 10000]);
+
+  var color = d3.scaleOrdinal();
+  color.range(d3.schemeCategory20);
   color.domain([0, 10000]);
 
   pack(root);
