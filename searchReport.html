@@ -38,7 +38,7 @@ d3.csv("test.csv", type, function(error, data) {
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
 
-  var color = d3.scaleOrdinal(d3.schemeCategory20c);
+  var color = d3.scaleOrdinal(d3.schemeCategory10).domain([0,10000]);
 
   pack(root);
 
@@ -52,6 +52,7 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; })
+      .style("fill", function(d) { return color(d.value); });
 
   node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.data.id; })
