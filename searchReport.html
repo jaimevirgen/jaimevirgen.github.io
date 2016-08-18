@@ -31,9 +31,22 @@ var pack = d3.pack()
     .size([width - 2, height - 2])
     .padding(3);
 
-d3.csv("flare.csv", type, function(error, data) {
-  if (error) throw error;
+var dataset = [
+				['termA',65112],
+				['termB',65312],
+				['termC',65312],
+				['termD',64112]
+			];
 
+var data = [];
+for (var i = 0 ; i < dataset.length; i++) {
+	var dataobj = {};
+	dataobj.term = dataset[i][0];
+	dataobj.results = dataset[i][1];
+	data.push(dataobj);
+}
+
+function mainRender() {
   var root = d3.hierarchy({children: data})
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
@@ -67,7 +80,9 @@ d3.csv("flare.csv", type, function(error, data) {
 
   node.append("title")
       .text(function(d) { return d.data.id + "\n" + format(d.value); });
-});
+};
+
+mainRender();
 
 function type(d) {
   return (d.value = +d.value) ? d : null;
