@@ -111,7 +111,7 @@ var x = d3.scale.ordinal()
 var y = d3.scale.linear()
         .rangeRound([height, 0]);
 
-var color = d3.scale.category20();
+var color = d3.scaleOrdinal(schemeCategory20c);
 
 var xAxis = d3.svg.axis()
         .scale(x)
