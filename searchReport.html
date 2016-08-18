@@ -52,7 +52,8 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { return color( d.r ) });
+      .style("fill", function(d) { var xcol = d3.scale.ordinal()
+        .rangeRoundBands([0, d.r], .35); return color( xcol ) });
 
   node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.data.id; })
