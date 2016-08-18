@@ -38,6 +38,8 @@ d3.csv("test.csv", type, function(error, data) {
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
 
+  var color = d3.scale.category20();
+
   pack(root);
 
   var node = svg.select("g")
@@ -50,6 +52,9 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; });
+      .style("fill", function (d, i) {
+            return color(i);
+        });
 
   node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.data.id; })
