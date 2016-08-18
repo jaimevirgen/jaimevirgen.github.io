@@ -52,7 +52,7 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { console.log(d); return color(d.depth); });
+      .style("fill", function(d) { console.log(d); return color( Math.floor(d.r % 20) ); });
 
   node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.data.id; })
