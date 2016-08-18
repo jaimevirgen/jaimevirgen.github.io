@@ -38,7 +38,8 @@ d3.csv("test.csv", type, function(error, data) {
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
 
-  var color = d3.scaleMagma();
+  // var color = d3.scaleMagma();
+  var color = d3.category20c();
   color.domain([0, 10000]);
 
   pack(root);
