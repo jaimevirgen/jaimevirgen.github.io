@@ -41,8 +41,11 @@ d3.csv("test.csv", type, function(error, data) {
   // var color = d3.scaleMagma();
   // color.domain([0, 10000]);
 
-  var color = d3.scaleOrdinal(d3.schemeCategory20c);
+  // var color = d3.scaleOrdinal(d3.schemeCategory20c);
   // color.domain([0, 10000]);
+
+  var color = d3.scaleOrdinal()
+  color.range(d3.schemeCategory20);
 
   pack(root);
 
@@ -56,7 +59,8 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { return color(d.value); });
+      .style("fill", function(d) { return color(d.value); })
+      .style("fill", function(d, i) { return color(i); });
 
   node.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.data.id; })
