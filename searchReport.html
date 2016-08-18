@@ -59,7 +59,7 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("circle")
       .attr("id", function(d) { return "node-" + d.data.id; })
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { return color(d.value); })
+      // .style("fill", function(d) { return color(d.value); })
       .style("fill", function(d, i) { return color(i); });
 
   node.append("clipPath")
