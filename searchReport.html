@@ -38,12 +38,12 @@ d3.csv("test.csv", type, function(error, data) {
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
 
-  var color = d3.scaleMagma();
-  color.domain([0, 10000]);
-
-  // var color = d3.scaleOrdinal(d3.schemeCategory20c);
+  // var color = d3.scaleMagma();
   // color.domain([0, 10000]);
 
+     var color = d3.scaleOrdinal(d3.schemeCategory20c);
+     color.range(d3.schemeCategory20c);
+     color.domain([0, 10000]);
 
   pack(root);
 
