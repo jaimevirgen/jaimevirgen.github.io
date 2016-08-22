@@ -73,7 +73,6 @@ d3.csv("test.csv", type, function(error, data) {
       .text(function(d) { return d; })
       .style("font-size", function(d,i,nodes) { var par = d3.select(this.parentNode).datum(); return Math.min(2 * par.r, (2 * par.r - 8) / this.getComputedTextLength() * 24) + "px"; })
       .attr("x", 0)
-      .attr("y", function(d, i, nodes) { return 20 + (i - nodes.length / 2 - 0.5) * 20; })
       .attr("y", ".35em");
 
   node.append("title")
