@@ -68,7 +68,7 @@ d3.csv("test.csv", type, function(error, data) {
   node.append("text")
       .attr("clip-path", function(d) { return "url(#clip-" + d.data.id + ")"; })
     .selectAll("tspan")
-      .data(function(d) { console.log(d.data.id.split(".").pop().split(/(?=[A-Z][^A-Z])/g) ); return d.data.id.split(".").pop().split(/(?=[A-Z][^A-Z])/g); })
+      .data(function(d) { return d.data.id.split(".").pop().split(/(?=[A-Z][^A-Z])/g).slice(0,1); })
     .enter().append("tspan")
       .text(function(d) { return d; })
       .style("font-size", function(d,i,nodes) { var par = d3.select(this.parentNode).datum(); return Math.min(2 * par.r, (2 * par.r - 8) / this.getComputedTextLength() * 24) + "px"; })
