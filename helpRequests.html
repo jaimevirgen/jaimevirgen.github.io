@@ -3,39 +3,14 @@
 <style>
 
 body {
-    background-color: #ccc;
+    background-color: #fff;
     width: 100%;
     font-family: 'Roboto', sans-serif;
     height: 100%;
-}
-
-.widget {
-    margin: 0 auto;
-    width:350px;
-    margin-top:50px;
-    background-color:#fff;
-    -background-color: #222D3A;
-    border-radius: 5px;
-    box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.3);
-
-}
-
-.header{
-    background-color: #eee;
-    height:40px;
-    color:#555;
-    text-align: center;
-    line-height: 40px;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-    font-weight: 400;
-    font-size: 1.5em;
-    text-shadow: 1px 1px #fff;
-    border-bottom: 1px solid #eaeaea;
-}
-
-.chart-container{
-    padding:25px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .axis path,
@@ -49,80 +24,108 @@ body {
   width: 100%;
   height: 100%;
   position: absolute;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+path.line
+{
+    fill: none;
 }
 
 </style>
 <script src="js/d3.min.js"></script>
 </head>
-<svg width="1" height="1" ></svg>
+<svg id="chart" ></svg>
 <script>
+
+// var dataset = [
+// 				['7/3/2016',65112,186,9235,6615,212656.8],
+// 				['7/4/2016',298038,958,60261,37783,657105],
+// 				['7/5/2016',513261,3275,109353,60223,780290.8],
+// 				['7/6/2016',563561,2328,122097,63419,706269.2],
+// 				['7/7/2016',554353,2580,116913,56030,750196],
+// 				['7/8/2016',477611,2075,108418,73343,666713.5],
+// 				['7/9/2016',255578,471,23191,26028,251735],
+// 				['7/10/2016',189277,769,21513,19324,212656.8],
+// 				['7/11/2016',569302,8669,125535,72132,657105],
+// 				['7/12/2016',599567,3621,118020,83950,780290.8],
+// 				['7/13/2016',226195,932,45440,23822,706269.2],
+// 				['7/14/2016',557772,3447,117838,60198,750196],
+// 				['7/15/2016',477234,2578,102976,63698,666713.5],
+// 				['7/16/2016',179395,536,22950,21312,251735],
+// 				['7/17/2016',195068,733,24982,20717,212656.8],
+// 				['7/18/2016',582765,2809,132473,85390,657105],
+// 				['7/19/2016',619650,2972,131524,100185,780290.8],
+// 				['7/20/2016',598566,2856,127203,65707,706269.2],
+// 				['7/21/2016',577257,2607,130444,58890,750196],
+// 				['7/22/2016',490739,2199,112844,53559,666713.5],
+// 				['7/23/2016',187254,662,25156,20245,251735],
+// 				['7/24/2016',212993,598,23176,16789,212656.8],
+// 				['7/25/2016',613633,3166,133489,78336,657105],
+// 				['7/26/2016',645998,3136,136971,75957,780290.8],
+// 				['7/27/2016',640366,3093,136447,84227,706269.2],
+// 				['7/28/2016',610794,2661,126963,96029,750196],
+// 				['7/29/2016',507229,2569,114889,74893,666713.5],
+// 				['7/30/2016',195427,698,26504,21533,251735],
+// 				['7/31/2016',213407,773,22613,19404,212656.8],
+// 				['8/1/2016',351204,1993,78544,49045,657105],
+// 				['8/2/2016',516121,2787,116497,58386,780290.8],
+// 				['8/3/2016',610453,3221,138566,72847,706269.2],
+// 				['8/4/2016',478375,2828,103157,91844,750196]
+// 			];
+
 var dataset = [
-				['7/3/2016',65112,186,9235,6615,212656.8],
-				['7/4/2016',298038,958,60261,37783,657105],
-				['7/5/2016',513261,3275,109353,60223,780290.8],
-				['7/6/2016',563561,2328,122097,63419,706269.2],
-				['7/7/2016',554353,2580,116913,56030,750196],
-				['7/8/2016',477611,2075,108418,73343,666713.5],
-				['7/9/2016',255578,471,23191,26028,251735],
-				['7/10/2016',189277,769,21513,19324,212656.8],
-				['7/11/2016',569302,8669,125535,72132,657105],
-				['7/12/2016',599567,3621,118020,83950,780290.8],
-				['7/13/2016',226195,932,45440,23822,706269.2],
-				['7/14/2016',557772,3447,117838,60198,750196],
-				['7/15/2016',477234,2578,102976,63698,666713.5],
-				['7/16/2016',179395,536,22950,21312,251735],
-				['7/17/2016',195068,733,24982,20717,212656.8],
-				['7/18/2016',582765,2809,132473,85390,657105],
-				['7/19/2016',619650,2972,131524,100185,780290.8],
-				['7/20/2016',598566,2856,127203,65707,706269.2],
-				['7/21/2016',577257,2607,130444,58890,750196],
-				['7/22/2016',490739,2199,112844,53559,666713.5],
-				['7/23/2016',187254,662,25156,20245,251735],
-				['7/24/2016',212993,598,23176,16789,212656.8],
-				['7/25/2016',613633,3166,133489,78336,657105],
-				['7/26/2016',645998,3136,136971,75957,780290.8],
-				['7/27/2016',640366,3093,136447,84227,706269.2],
-				['7/28/2016',610794,2661,126963,96029,750196],
-				['7/29/2016',507229,2569,114889,74893,666713.5],
-				['7/30/2016',195427,698,26504,21533,251735],
-				['7/31/2016',213407,773,22613,19404,212656.8],
-				['8/1/2016',351204,1993,78544,49045,657105],
-				['8/2/2016',516121,2787,116497,58386,780290.8],
-				['8/3/2016',610453,3221,138566,72847,706269.2],
-				['8/4/2016',478375,2828,103157,91844,750196]
-			];
+	{"id":"1","event_date":"2016-07-19","event_web":"619644","event_f1":"2972","event_custom":"131523","event_api":"100182","total":"854321","daily_average":"854947"},
+	{"id":"2","event_date":"2016-07-20","event_web":"598566","event_f1":"2856","event_custom":"127203","event_api":"65707","total":"794332","daily_average":"840123"},
+	{"id":"3","event_date":"2016-07-21","event_web":"577257","event_f1":"2607","event_custom":"130444","event_api":"58890","total":"769198","daily_average":"805893"},{"id":"4","event_date":"2016-07-22","event_web":"490739","event_f1":"2199","event_custom":"112844","event_api":"53559","total":"659341","daily_average":"687045"},{"id":"5","event_date":"2016-07-23","event_web":"187254","event_f1":"662","event_custom":"25156","event_api":"20245","total":"233317","daily_average":"228171"},{"id":"6","event_date":"2016-07-24","event_web":"212993","event_f1":"598","event_custom":"23176","event_api":"16789","total":"253556","daily_average":"244602"},{"id":"7","event_date":"2016-07-25","event_web":"613633","event_f1":"3166","event_custom":"133489","event_api":"78336","total":"828624","daily_average":"824580"},{"id":"8","event_date":"2016-07-26","event_web":"645998","event_f1":"3136","event_custom":"136971","event_api":"75957","total":"862062","daily_average":"854947"},{"id":"9","event_date":"2016-07-27","event_web":"640366","event_f1":"3093","event_custom":"136447","event_api":"84227","total":"864133","daily_average":"840123"},{"id":"10","event_date":"2016-07-28","event_web":"610794","event_f1":"2661","event_custom":"126963","event_api":"96029","total":"836447","daily_average":"805893"},{"id":"11","event_date":"2016-07-29","event_web":"507229","event_f1":"2569","event_custom":"114889","event_api":"74893","total":"699580","daily_average":"687045"},{"id":"12","event_date":"2016-07-30","event_web":"195427","event_f1":"698","event_custom":"26504","event_api":"21533","total":"244162","daily_average":"228171"},{"id":"13","event_date":"2016-07-31","event_web":"213407","event_f1":"773","event_custom":"22613","event_api":"19404","total":"256197","daily_average":"244602"},{"id":"14","event_date":"2016-08-01","event_web":"595294","event_f1":"3384","event_custom":"130770","event_api":"82263","total":"811711","daily_average":"824580"},{"id":"15","event_date":"2016-08-02","event_web":"621727","event_f1":"3425","event_custom":"138378","event_api":"71764","total":"835294","daily_average":"854947"},{"id":"16","event_date":"2016-08-03","event_web":"610453","event_f1":"3221","event_custom":"138566","event_api":"72847","total":"825087","daily_average":"840123"},{"id":"17","event_date":"2016-08-04","event_web":"586609","event_f1":"3495","event_custom":"130007","event_api":"103474","total":"823585","daily_average":"805893"},{"id":"18","event_date":"2016-08-05","event_web":"494167","event_f1":"11150","event_custom":"116788","event_api":"67412","total":"689517","daily_average":"687045"},{"id":"19","event_date":"2016-08-06","event_web":"161570","event_f1":"823","event_custom":"23681","event_api":"19895","total":"205969","daily_average":"228171"},{"id":"20","event_date":"2016-08-07","event_web":"182329","event_f1":"742","event_custom":"25141","event_api":"18490","total":"226702","daily_average":"244602"},{"id":"21","event_date":"2016-08-08","event_web":"594151","event_f1":"3079","event_custom":"133635","event_api":"86315","total":"817180","daily_average":"824580"},{"id":"22","event_date":"2016-08-09","event_web":"622541","event_f1":"3053","event_custom":"139835","event_api":"67791","total":"833220","daily_average":"854947"},{"id":"23","event_date":"2016-08-10","event_web":"606971","event_f1":"3154","event_custom":"140716","event_api":"66821","total":"817662","daily_average":"840123"},{"id":"24","event_date":"2016-08-11","event_web":"592199","event_f1":"3332","event_custom":"139369","event_api":"59442","total":"794342","daily_average":"805893"},{"id":"25","event_date":"2016-08-12","event_web":"512098","event_f1":"2813","event_custom":"122146","event_api":"62683","total":"699740","daily_average":"687045"},{"id":"26","event_date":"2016-08-13","event_web":"181959","event_f1":"843","event_custom":"26267","event_api":"20167","total":"229236","daily_average":"228171"},{"id":"27","event_date":"2016-08-14","event_web":"197055","event_f1":"923","event_custom":"24001","event_api":"19975","total":"241954","daily_average":"244602"},{"id":"28","event_date":"2016-08-15","event_web":"636027","event_f1":"3685","event_custom":"133942","event_api":"67151","total":"840805","daily_average":"824580"},{"id":"29","event_date":"2016-08-16","event_web":"674351","event_f1":"4004","event_custom":"149406","event_api":"62077","total":"889838","daily_average":"854947"},{"id":"30","event_date":"2016-08-17","event_web":"660843","event_f1":"3243","event_custom":"138877","event_api":"96440","total":"899403","daily_average":"840123"}
+];
 
 var data = [];
 for (var i = 0 ; i < dataset.length; i++) {
 	var dataobj = {};
-	dataobj.date = dataset[i][0];
-	dataobj.web = dataset[i][1];
-	dataobj.f1 = dataset[i][2];
-	dataobj.custom = dataset[i][3];
-	dataobj.api = dataset[i][4];
-	dataobj.average = dataset[i][5];
+	dataobj.date = dataset[i].event_date;
+	dataobj.web = parseInt(dataset[i].event_web);
+	dataobj.f1 = parseInt(dataset[i].event_f1);
+	dataobj.custom = parseInt(dataset[i].event_custom);
+	dataobj.api = parseInt(dataset[i].event_api);
+	dataobj.total = parseInt(dataset[i].total);
+	dataobj.average = parseInt(dataset[i].daily_average);
 	data.push(dataobj);
 }
 
+var xData = ["web","f1","custom","api"];
 
-var xData = ["web", "f1","custom","api","average"];
-
-var margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = parseInt(d3.select("#chart").style("width")) - margin.left - margin.right,
-    height = parseInt(d3.select("#chart").style("height")) - margin.top - margin.bottom;
-
+var margin = {top: 20, right: 20, bottom: 130, left: 100},
+	    width = parseInt(d3.select("#chart").style("width")) - margin.left - margin.right,
+	    height = parseInt(d3.select("#chart").style("height")) - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .35);
+        .rangeRoundBands([0, width], .15);
 
 var y = d3.scale.linear()
         .rangeRound([height, 0]);
 
 var color = d3.scale.category10();
 
+var line = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.average); });
+
 var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+        .ticks(6);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .innerTickSize(-width)
+    .outerTickSize(0)
+    .tickPadding(10)
+    .tickFormat(d3.format(".2s"));
 
 var svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -132,7 +135,7 @@ var svg = d3.select("body").append("svg")
 
 var dataIntermediate = xData.map(function (c) {
     return data.map(function (d) {
-        return {x: d.date, y: d[c]};
+    	return {x: d.date, y: d[c]};
     });
 });
 
@@ -148,10 +151,47 @@ y.domain([0,
     ])
   .nice();
 
+
+
+svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .attr("opacity", 0.5)
+        .call(xAxis)
+        .selectAll("text")
+        .style("fill", "#009cdd")
+        .style("font-size","12px")
+        .style("text-anchor", "end")
+    	.attr("transform", "rotate(-30)")
+    	.attr("x", 0)
+    	.attr("y", 10)
+    	.text(function (d) {
+		     if(d.length > 5)
+		         return d.substring(5,d.length).replace('-','.');
+		     else
+		         return d;
+		 });
+
+svg.append("g")
+        .attr("class", "axis")
+    	.attr("transform", "translate(" + 0 + ",0)")
+    	.attr("opacity", 0.2)
+    	.call(yAxis);
+
+svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("stroke", "#37474F")
+      .attr("stroke-width", 5)
+      .attr("opacity", .5)
+      .attr("transform", "translate(10,0)")
+      .attr("d", line);
+
 var layer = svg.selectAll(".stack")
         .data(dataStackLayout)
         .enter().append("g")
         .attr("class", "stack")
+        .attr("opacity", 1)
         .style("fill", function (d, i) {
             return color(i);
         });
@@ -172,24 +212,9 @@ layer.selectAll("rect")
         })
         .attr("width", x.rangeBand());
 
-svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-    	.attr("x", -40)
-    	.attr("y", -5)
-    	.attr("transform", "rotate(-90)")
 
-d3.select(window).on('resize', resize);
 
-function resize() {
-    // update width
-    width = parseInt(d3.select('#chart').style('width'), 10);
-    height = width * .5625;
 
-    console.log("RESIZE");
-}
 
 </script>
 <body>
