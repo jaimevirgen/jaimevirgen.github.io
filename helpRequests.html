@@ -3,21 +3,23 @@
 <style>
 
 body {
-    background-color: #d3d3d3;
+	color: #fff;
+    background-color: #333;
     width: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Lato',sans-serif;
+    font-weight: 300;
     height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
-  opacity: 0.3;
+  stroke: #fff;
+  opacity: 0.5;
   shape-rendering: crispEdges;
 }
 
@@ -53,9 +55,12 @@ path.line
 }
 
 .legend {
-	height: 50px;
+	min-height: 50px;
+	max-height: 10%;
+	width: 100%;
 	display: flex;
 	justify-content: space-around;
+	margin-top: 1em;
 	margin-bottom: 10px;
 }
 
@@ -68,9 +73,91 @@ path.line
 	font-size: 2.5em;
 }
 
+.itemTotalLarge {
+	font-size: 1em;
+}
+
+.dailyColumnsContainer {
+	margin-top: 25px;
+	min-height: 200px;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.dailyColumn {
+	text-align: center;
+	max-width: 25%;
+}
+
+.columnTitle {
+	font-size: 2.4em;
+}
+
+.columnTable {
+	color:ccc;
+	padding-top: 10px;
+	text-align: left;
+	font-size: 1.5em;
+}
+
+th { font-family: 'Lato',sans-serif; font-weight: 300; text-align: left; color:rgba(255,255,255,.3); }
+th, td { padding: 0 1em 0.5ex 0;}
+th.center, td.center { text-align: center; }
+th.num, td.num { text-align: right; }
+td { padding-left: 5px; text-align: center; }
+
+tbody tr:nth-child(odd) {
+   background-color: #3f3f3f;
+}
+
+.stateRed {
+	color: #ff6666;
+}
+
+.stateGreen {
+	color: #23F3A8;
+}
+
+.blink {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 0.5s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
 </style>
 <script   src="https://code.jquery.com/jquery-1.9.1.min.js"   integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="   crossorigin="anonymous"></script>
 <script src="js/d3.min.js"></script>
+<script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
 </head>
 <body>
 <div id="chartContainer1">
@@ -78,19 +165,53 @@ path.line
 		<div class="legendItem" style="color:#3182bd">Monthly Total Web<br><span class="itemTotal" id="totalWebMonthly"></span></div>
 		<div class="legendItem" style="color:#e6550d">Monthly Total F1<br><span class="itemTotal" id="totalf1Monthly"></span></div>
 		<div class="legendItem" style="color:#31a354">Monthly Total Custom<br><span class="itemTotal" id="totalCustomMonthly"></span></div>
-		<div class="legendItem" style="color:#756bb1">Monthly Total API<br><span class="itemTotal" id="totalAPIMonthly"></span></div>
+		<div class="legendItem" style="color:#b1abd3">Monthly Total API<br><span class="itemTotal" id="totalAPIMonthly"></span></div>
 	</div>
 	<svg id="chart" ></svg>
 </div>
 
 <div id="chartContainer2">
-	<div class="legend">
-		<div class="legendItem" style="color:#3182bd">Daily Total Web<br><span class="itemTotal" id="totalWebDaily"></span></div>
-		<div class="legendItem" style="color:#e6550d">Daily Total F1<br><span class="itemTotal" id="totalf1Daily"></span></div>
-		<div class="legendItem" style="color:#31a354">Daily Total Custom<br><span class="itemTotal" id="totalCustomDaily"></span></div>
-		<div class="legendItem" style="color:#756bb1">Daily Total API<br><span class="itemTotal" id="totalAPIDaily"></span></div>
+	<!-- <div class="legend">
+		<div class="legendItem" style="color:#3182bd">Daily Total Web<br><span class="itemTotalLarge" id="totalWebDaily"></span></div>
+		<div class="legendItem" style="color:#e6550d">Daily Total F1<br><span class="itemTotalLarge" id="totalf1Daily"></span></div>
+		<div class="legendItem" style="color:#31a354">Daily Total Custom<br><span class="itemTotalLarge" id="totalCustomDaily"></span></div>
+		<div class="legendItem" style="color:#b1abd3">Daily Total API<br><span class="itemTotalLarge" id="totalAPIDaily"></span></div>
+	</div> -->
+
+	<div class="dailyColumnsContainer">
+		<div class="dailyColumn" >
+			<div class="columnTitle" style="color:#3182bd">
+				Web <span class="itemTotalLarge" id="totalWebDaily"></span>
+			</div>
+			<div class="columnTable" id="webTable"></div>
+		</div>
+		<div class="dailyColumn" >
+			<div class="columnTitle" style="color:#e6550d">
+				F1 <span class="itemTotalLarge" id="totalf1Daily"></span>
+			</div>
+			<div class="columnTable" id="webTable2"></div>
+		</div>
 	</div>
+
+	<div class="dailyColumnsContainer">
+		<div class="dailyColumn" >
+			<div class="columnTitle" style="color:#31a354">
+				Custom <span class="itemTotalLarge" id="totalCustomDaily"></span>
+			</div>
+			<div class="columnTable" id="webTable3"></div>
+		</div>
+		<div class="dailyColumn" >
+			<div class="columnTitle" style="color:#b1abd3">
+				API <span class="itemTotalLarge" id="totalAPIDaily"></span>
+			</div>
+			<div class="columnTable" id="webTable4"></div>
+		</div>
+	</div>
+
+
+
 </div>
+
 <script>
 
 	var dataset = [
@@ -207,7 +328,7 @@ path.line
 
 	svg.append("g")
 	        .attr("class", "axis")
-	        .style("fill", "#00364d")
+	        .style("fill", "#fff") //00364d
 	    	.attr("transform", "translate(" + 0 + ",0)")
 	    	.attr("opacity", 0.7)
 	    	.call(yAxis);
@@ -219,7 +340,7 @@ path.line
 	        .attr("opacity", 1)
 	        .style("fill", function (d, i) {
 	        	var colorString = '';
-	        	var colorRange = ["#3182bd", "#e6550d", "#31a354", "#756bb1"];
+	        	var colorRange = ["#3182bd", "#e6550d", "#31a354", "#b1abd3"];
 	            return colorRange[i];
 	        });
 
@@ -242,7 +363,7 @@ path.line
 	svg.append("path")
 	      .datum(data)
 	      .attr("class", "line")
-	      .attr("stroke", "#37474F")
+	      .attr("stroke", "#fff")
 	      .attr("stroke-width", 5)
 	      .attr("opacity", 0.5)
 	      .attr("transform", "translate(10,0)")
@@ -255,7 +376,7 @@ path.line
 	        .call(xAxis)
 	        .selectAll("text")
 	        .style("fill", function (d, i) {
-	    		var color = "#00364d";
+	    		var color = "#fff";
 	    		if(width < 900){
 	    			color = "#ffffff"
 	    		}
@@ -297,10 +418,98 @@ path.line
 			         return d;
 			 });
 
+	/////////////////////////////////////////////////////////////////////////////
+
+	// DAILY TABLES
+
+	function drawColumnTable(elemId) {
+
+		// the table rows, typically loaded from data file using d3.csv
+	    var movies = [
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.2 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.5 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 3.1 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 1.1 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.1 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.4 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.1 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -2.1 },
+	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.4 }
+	    ];
+
+	    // column definitions
+	    var columns = [
+	        { head: 'Site', cl: 'center', html: ƒ('siteId') },
+	        { head: 'Requests', cl: 'center', html: ƒ('request_total', formatNum()) },
+	        { head: 'Total', cl: 'center', html: ƒ('percent_total', signPercent()) },
+	        { head: 'State', cl: 'center', html: ƒ('rating', signNumber()) }
+	    ];
+
+	    // create table
+	    var table = d3.select('#'+ elemId)
+	        .append('table');
+
+	    // create table header
+	    table.append('thead').append('tr')
+	        .selectAll('th')
+	        .data(columns).enter()
+	        .append('th')
+	        .attr('class', ƒ('cl'))
+	        .text(ƒ('head'));
+
+	    // create table body
+	    table.append('tbody')
+	        .selectAll('tr')
+	        .data(movies).enter()
+	        .append('tr')
+	        .selectAll('td')
+	        .data(function(row, i) {
+	            return columns.map(function(c) {
+	                // compute cell values for this specific row
+	                var cell = {};
+	                d3.keys(c).forEach(function(k) {
+	                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+	                });
+	                if(cell.head === 'State' && cell.html){
+
+	                	cell.cl += cell.html > 0 ? " stateGreen" : " stateRed";
+
+	                	if(cell.html > 1 || cell.html < -1){
+	                		cell.cl += " blink";
+	                	}
+	                }
+	                return cell;
+	            });
+	        }).enter()
+	        .append('td')
+	        .html(ƒ('html'))
+	        .attr('class', ƒ('cl'));
+
+	    function formatNum() {
+	        return function(l) { return numberWithCommas(l); };
+	    }
+	    function signPercent() {
+	        return function(p) { return p + "%"; };
+	    }
+	    function signNumber() {
+	        return function(n) { var nn = n > 0 ? '+' + n : n ;  return nn; };
+	    }
+
+	}
+
+	drawColumnTable('webTable');
+	drawColumnTable('webTable2');
+	drawColumnTable('webTable3');
+	drawColumnTable('webTable4');
+
+	////////////////////////////////////////////////////////////////////////////
+
 	window.switchIn = function () {
 	    $('#chartContainer1').fadeToggle(function() {
 	        $('#chartContainer2').fadeToggle(function() {
-	            setTimeout(function() {window.switchOut();}, 5000);
+	            setTimeout(function() {window.switchOut();}, 7000);
 	        });
 	    });
 	}
@@ -308,12 +517,12 @@ path.line
 	window.switchOut = function () {
 	    $('#chartContainer2').fadeToggle(function() {
 	        $('#chartContainer1').fadeToggle(function() {
-	            setTimeout(function() {window.switchIn();}, 5000);
+	            setTimeout(function() {window.switchIn();}, 7000);
 	        });
 	    });
 	}
 
-	setTimeout(function() {window.switchIn();}, 5000)
+	setTimeout(function() {window.switchIn();}, 7000)
 </script>
 </body>
 </html>
