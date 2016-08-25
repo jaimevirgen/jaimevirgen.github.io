@@ -3,7 +3,7 @@
 <style>
 
 body {
-    background-color: #fff;
+    background-color: #d3d3d3;
     width: 100%;
     font-family: 'Roboto', sans-serif;
     height: 100%;
@@ -17,13 +17,27 @@ body {
 .axis line {
   fill: none;
   stroke: #000;
+  opacity: 0.3;
   shape-rendering: crispEdges;
 }
 
+#chartContainer1 {
+	height: 90%;
+	position: absolute;
+	width: 100%;
+}
+
+#chartContainer2 {
+	position: absolute;
+	width: 100%;
+	height: 40%;
+	display:none
+}
+
 #chart {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -34,153 +48,272 @@ path.line
     fill: none;
 }
 
-</style>
-<script src="js/d3.min.js"></script>
-</head>
-<svg id="chart" ></svg>
-<script>
-
-var dataset = [
-	{"id":"1","event_date":"2016-07-19","event_web":"619644","event_f1":"2972","event_custom":"131523","event_api":"100182","total":"854321","daily_average":"854947"},
-	{"id":"2","event_date":"2016-07-20","event_web":"598566","event_f1":"2856","event_custom":"127203","event_api":"65707","total":"794332","daily_average":"840123"},
-	{"id":"3","event_date":"2016-07-21","event_web":"577257","event_f1":"2607","event_custom":"130444","event_api":"58890","total":"769198","daily_average":"805893"},{"id":"4","event_date":"2016-07-22","event_web":"490739","event_f1":"2199","event_custom":"112844","event_api":"53559","total":"659341","daily_average":"687045"},{"id":"5","event_date":"2016-07-23","event_web":"187254","event_f1":"662","event_custom":"25156","event_api":"20245","total":"233317","daily_average":"228171"},{"id":"6","event_date":"2016-07-24","event_web":"212993","event_f1":"598","event_custom":"23176","event_api":"16789","total":"253556","daily_average":"244602"},{"id":"7","event_date":"2016-07-25","event_web":"613633","event_f1":"3166","event_custom":"133489","event_api":"78336","total":"828624","daily_average":"824580"},{"id":"8","event_date":"2016-07-26","event_web":"645998","event_f1":"3136","event_custom":"136971","event_api":"75957","total":"862062","daily_average":"854947"},{"id":"9","event_date":"2016-07-27","event_web":"640366","event_f1":"3093","event_custom":"136447","event_api":"84227","total":"864133","daily_average":"840123"},{"id":"10","event_date":"2016-07-28","event_web":"610794","event_f1":"2661","event_custom":"126963","event_api":"96029","total":"836447","daily_average":"805893"},{"id":"11","event_date":"2016-07-29","event_web":"507229","event_f1":"2569","event_custom":"114889","event_api":"74893","total":"699580","daily_average":"687045"},{"id":"12","event_date":"2016-07-30","event_web":"195427","event_f1":"698","event_custom":"26504","event_api":"21533","total":"244162","daily_average":"228171"},{"id":"13","event_date":"2016-07-31","event_web":"213407","event_f1":"773","event_custom":"22613","event_api":"19404","total":"256197","daily_average":"244602"},{"id":"14","event_date":"2016-08-01","event_web":"595294","event_f1":"3384","event_custom":"130770","event_api":"82263","total":"811711","daily_average":"824580"},{"id":"15","event_date":"2016-08-02","event_web":"621727","event_f1":"3425","event_custom":"138378","event_api":"71764","total":"835294","daily_average":"854947"},{"id":"16","event_date":"2016-08-03","event_web":"610453","event_f1":"3221","event_custom":"138566","event_api":"72847","total":"825087","daily_average":"840123"},{"id":"17","event_date":"2016-08-04","event_web":"586609","event_f1":"3495","event_custom":"130007","event_api":"103474","total":"823585","daily_average":"805893"},{"id":"18","event_date":"2016-08-05","event_web":"494167","event_f1":"11150","event_custom":"116788","event_api":"67412","total":"689517","daily_average":"687045"},{"id":"19","event_date":"2016-08-06","event_web":"161570","event_f1":"823","event_custom":"23681","event_api":"19895","total":"205969","daily_average":"228171"},{"id":"20","event_date":"2016-08-07","event_web":"182329","event_f1":"742","event_custom":"25141","event_api":"18490","total":"226702","daily_average":"244602"},{"id":"21","event_date":"2016-08-08","event_web":"594151","event_f1":"3079","event_custom":"133635","event_api":"86315","total":"817180","daily_average":"824580"},{"id":"22","event_date":"2016-08-09","event_web":"622541","event_f1":"3053","event_custom":"139835","event_api":"67791","total":"833220","daily_average":"854947"},{"id":"23","event_date":"2016-08-10","event_web":"606971","event_f1":"3154","event_custom":"140716","event_api":"66821","total":"817662","daily_average":"840123"},{"id":"24","event_date":"2016-08-11","event_web":"592199","event_f1":"3332","event_custom":"139369","event_api":"59442","total":"794342","daily_average":"805893"},{"id":"25","event_date":"2016-08-12","event_web":"512098","event_f1":"2813","event_custom":"122146","event_api":"62683","total":"699740","daily_average":"687045"},{"id":"26","event_date":"2016-08-13","event_web":"181959","event_f1":"843","event_custom":"26267","event_api":"20167","total":"229236","daily_average":"228171"},{"id":"27","event_date":"2016-08-14","event_web":"197055","event_f1":"923","event_custom":"24001","event_api":"19975","total":"241954","daily_average":"244602"},{"id":"28","event_date":"2016-08-15","event_web":"636027","event_f1":"3685","event_custom":"133942","event_api":"67151","total":"840805","daily_average":"824580"},{"id":"29","event_date":"2016-08-16","event_web":"674351","event_f1":"4004","event_custom":"149406","event_api":"62077","total":"889838","daily_average":"854947"},{"id":"30","event_date":"2016-08-17","event_web":"660843","event_f1":"3243","event_custom":"138877","event_api":"96440","total":"899403","daily_average":"840123"}
-];
-
-var data = [];
-for (var i = 0 ; i < dataset.length; i++) {
-	var dataobj = {};
-	dataobj.date = dataset[i].event_date;
-	dataobj.web = parseInt(dataset[i].event_web);
-	dataobj.f1 = parseInt(dataset[i].event_f1);
-	dataobj.custom = parseInt(dataset[i].event_custom);
-	dataobj.api = parseInt(dataset[i].event_api);
-	dataobj.total = parseInt(dataset[i].total);
-	dataobj.average = parseInt(dataset[i].daily_average);
-	data.push(dataobj);
+.tick {
+  opacity: 1;
 }
 
-var xData = ["web","f1","custom","api"];
+.legend {
+	height: 50px;
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 10px;
+}
 
-var margin = {top: 20, right: 20, bottom: 130, left: 100},
-	    width = parseInt(d3.select("#chart").style("width")) - margin.left - margin.right,
-	    height = parseInt(d3.select("#chart").style("height")) - margin.top - margin.bottom;
+.legendItem {
+	font-size: 1.0em;
+	text-align: center;
+}
 
-var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .15);
+.itemTotal {
+	font-size: 2.5em;
+}
 
-var y = d3.scale.linear()
-        .rangeRound([height, 0]);
-
-var color = d3.scale.category10();
-
-var line = d3.svg.line()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.average); });
-
-var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .ticks(6);
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .innerTickSize(-width)
-    .outerTickSize(0)
-    .tickPadding(10)
-    .tickFormat(d3.format(".2s"));
-
-var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-var dataIntermediate = xData.map(function (c) {
-    return data.map(function (d) {
-    	return {x: d.date, y: d[c]};
-    });
-});
-
-var dataStackLayout = d3.layout.stack()(dataIntermediate);
-
-x.domain(dataStackLayout[0].map(function (d) {
-    return d.x;
-}));
-
-y.domain([0,
-    d3.max(dataStackLayout[dataStackLayout.length - 1],
-            function (d) { return d.y0 + d.y;})
-    ])
-  .nice();
-
-
-
-svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height + ")")
-        .attr("opacity", 0.5)
-        .call(xAxis)
-        .selectAll("text")
-        .style("fill", "#009cdd")
-        .style("font-size","12px")
-        .style("text-anchor", "end")
-    	.attr("transform", "rotate(-30)")
-    	.attr("x", 0)
-    	.attr("y", 10)
-    	.text(function (d) {
-		     if(d.length > 5)
-		         return d.substring(5,d.length).replace('-','.');
-		     else
-		         return d;
-		 });
-
-svg.append("g")
-        .attr("class", "axis")
-    	.attr("transform", "translate(" + 0 + ",0)")
-    	.attr("opacity", 0.2)
-    	.call(yAxis);
-
-svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("stroke", "#37474F")
-      .attr("stroke-width", 5)
-      .attr("opacity", .5)
-      .attr("transform", "translate(10,0)")
-      .attr("d", line);
-
-var layer = svg.selectAll(".stack")
-        .data(dataStackLayout)
-        .enter().append("g")
-        .attr("class", "stack")
-        .attr("opacity", 1)
-        .style("fill", function (d, i) {
-            return color(i);
-        });
-
-layer.selectAll("rect")
-        .data(function (d) {
-            return d;
-        })
-        .enter().append("rect")
-        .attr("x", function (d) {
-            return x(d.x);
-        })
-        .attr("y", function (d) {
-            return y(d.y + d.y0);
-        })
-        .attr("height", function (d) {
-            return y(d.y0) - y(d.y + d.y0);
-        })
-        .attr("width", x.rangeBand());
-
-
-
-
-
-</script>
+</style>
+<script   src="https://code.jquery.com/jquery-1.9.1.min.js"   integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="   crossorigin="anonymous"></script>
+<script src="js/d3.min.js"></script>
+</head>
 <body>
+<div id="chartContainer1">
+	<div class="legend">
+		<div class="legendItem" style="color:#3182bd">Monthly Total Web<br><span class="itemTotal" id="totalWebMonthly"></span></div>
+		<div class="legendItem" style="color:#e6550d">Monthly Total F1<br><span class="itemTotal" id="totalf1Monthly"></span></div>
+		<div class="legendItem" style="color:#31a354">Monthly Total Custom<br><span class="itemTotal" id="totalCustomMonthly"></span></div>
+		<div class="legendItem" style="color:#756bb1">Monthly Total API<br><span class="itemTotal" id="totalAPIMonthly"></span></div>
+	</div>
+	<svg id="chart" ></svg>
+</div>
+
+<div id="chartContainer2">
+	<div class="legend">
+		<div class="legendItem" style="color:#3182bd">Daily Total Web<br><span class="itemTotal" id="totalWebDaily"></span></div>
+		<div class="legendItem" style="color:#e6550d">Daily Total F1<br><span class="itemTotal" id="totalf1Daily"></span></div>
+		<div class="legendItem" style="color:#31a354">Daily Total Custom<br><span class="itemTotal" id="totalCustomDaily"></span></div>
+		<div class="legendItem" style="color:#756bb1">Daily Total API<br><span class="itemTotal" id="totalAPIDaily"></span></div>
+	</div>
+</div>
+<script>
+
+	var dataset = [
+		{"id":"1","event_date":"2016-07-19","event_web":"619644","event_f1":"2972","event_custom":"131523","event_api":"100182","total":"854321","daily_average":"854947"},
+		{"id":"2","event_date":"2016-07-20","event_web":"598566","event_f1":"2856","event_custom":"127203","event_api":"65707","total":"794332","daily_average":"840123"},
+		{"id":"3","event_date":"2016-07-21","event_web":"577257","event_f1":"2607","event_custom":"130444","event_api":"58890","total":"769198","daily_average":"805893"},{"id":"4","event_date":"2016-07-22","event_web":"490739","event_f1":"2199","event_custom":"112844","event_api":"53559","total":"659341","daily_average":"687045"},{"id":"5","event_date":"2016-07-23","event_web":"187254","event_f1":"662","event_custom":"25156","event_api":"20245","total":"233317","daily_average":"228171"},{"id":"6","event_date":"2016-07-24","event_web":"212993","event_f1":"598","event_custom":"23176","event_api":"16789","total":"253556","daily_average":"244602"},{"id":"7","event_date":"2016-07-25","event_web":"613633","event_f1":"3166","event_custom":"133489","event_api":"78336","total":"828624","daily_average":"824580"},{"id":"8","event_date":"2016-07-26","event_web":"645998","event_f1":"3136","event_custom":"136971","event_api":"75957","total":"862062","daily_average":"854947"},{"id":"9","event_date":"2016-07-27","event_web":"640366","event_f1":"3093","event_custom":"136447","event_api":"84227","total":"864133","daily_average":"840123"},{"id":"10","event_date":"2016-07-28","event_web":"610794","event_f1":"2661","event_custom":"126963","event_api":"96029","total":"836447","daily_average":"805893"},{"id":"11","event_date":"2016-07-29","event_web":"507229","event_f1":"2569","event_custom":"114889","event_api":"74893","total":"699580","daily_average":"687045"},{"id":"12","event_date":"2016-07-30","event_web":"195427","event_f1":"698","event_custom":"26504","event_api":"21533","total":"244162","daily_average":"228171"},{"id":"13","event_date":"2016-07-31","event_web":"213407","event_f1":"773","event_custom":"22613","event_api":"19404","total":"256197","daily_average":"244602"},{"id":"14","event_date":"2016-08-01","event_web":"595294","event_f1":"3384","event_custom":"130770","event_api":"82263","total":"811711","daily_average":"824580"},{"id":"15","event_date":"2016-08-02","event_web":"621727","event_f1":"3425","event_custom":"138378","event_api":"71764","total":"835294","daily_average":"854947"},{"id":"16","event_date":"2016-08-03","event_web":"610453","event_f1":"3221","event_custom":"138566","event_api":"72847","total":"825087","daily_average":"840123"},{"id":"17","event_date":"2016-08-04","event_web":"586609","event_f1":"3495","event_custom":"130007","event_api":"103474","total":"823585","daily_average":"805893"},{"id":"18","event_date":"2016-08-05","event_web":"494167","event_f1":"11150","event_custom":"116788","event_api":"67412","total":"689517","daily_average":"687045"},{"id":"19","event_date":"2016-08-06","event_web":"161570","event_f1":"823","event_custom":"23681","event_api":"19895","total":"205969","daily_average":"228171"},{"id":"20","event_date":"2016-08-07","event_web":"182329","event_f1":"742","event_custom":"25141","event_api":"18490","total":"226702","daily_average":"244602"},{"id":"21","event_date":"2016-08-08","event_web":"594151","event_f1":"3079","event_custom":"133635","event_api":"86315","total":"817180","daily_average":"824580"},{"id":"22","event_date":"2016-08-09","event_web":"622541","event_f1":"3053","event_custom":"139835","event_api":"67791","total":"833220","daily_average":"854947"},{"id":"23","event_date":"2016-08-10","event_web":"606971","event_f1":"3154","event_custom":"140716","event_api":"66821","total":"817662","daily_average":"840123"},{"id":"24","event_date":"2016-08-11","event_web":"592199","event_f1":"3332","event_custom":"139369","event_api":"59442","total":"794342","daily_average":"805893"},{"id":"25","event_date":"2016-08-12","event_web":"512098","event_f1":"2813","event_custom":"122146","event_api":"62683","total":"699740","daily_average":"687045"},{"id":"26","event_date":"2016-08-13","event_web":"181959","event_f1":"843","event_custom":"26267","event_api":"20167","total":"229236","daily_average":"228171"},{"id":"27","event_date":"2016-08-14","event_web":"197055","event_f1":"923","event_custom":"24001","event_api":"19975","total":"241954","daily_average":"244602"},{"id":"28","event_date":"2016-08-15","event_web":"636027","event_f1":"3685","event_custom":"133942","event_api":"67151","total":"840805","daily_average":"824580"},{"id":"29","event_date":"2016-08-16","event_web":"674351","event_f1":"4004","event_custom":"149406","event_api":"62077","total":"889838","daily_average":"854947"},{"id":"30","event_date":"2016-08-17","event_web":"660843","event_f1":"3243","event_custom":"138877","event_api":"96440","total":"899403","daily_average":"840123"}
+	];
+
+	var data = [];
+	var dailyTotalWeb = 0;
+	var dailyTotalf1 = 0;
+	var dailyTotalCustom = 0;
+	var dailyTotalAPI = 0;
+	var monthlyTotalWeb = 0;
+	var monthlyTtotalf1 = 0;
+	var monthlyTtotalCustom = 0;
+	var monthlyTtotalAPI = 0;
+
+	for (var i = 0 ; i < dataset.length; i++) {
+		var dataobj = {};
+		dataobj.date = dataset[i].event_date;
+		dataobj.web = parseInt(dataset[i].event_web);
+		dataobj.f1 = parseInt(dataset[i].event_f1);
+		dataobj.custom = parseInt(dataset[i].event_custom);
+		dataobj.api = parseInt(dataset[i].event_api);
+		dataobj.total = parseInt(dataset[i].total);
+		dataobj.average = parseInt(dataset[i].daily_average);
+		data.push(dataobj);
+
+		monthlyTotalWeb 	+= parseInt(dataset[i].event_web);
+		monthlyTtotalf1 	+= parseInt(dataset[i].event_f1);
+		monthlyTtotalCustom += parseInt(dataset[i].event_custom);
+		monthlyTtotalAPI 	+= parseInt(dataset[i].event_api);
+
+	}
+
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	function getDailyTotal() {
+		dailyTotalWeb 	= parseInt(dataset[dataset.length - 1].event_web);
+		dailyTtotalf1 	= parseInt(dataset[dataset.length - 1].event_f1);
+		dailyTtotalCustom = parseInt(dataset[dataset.length - 1].event_custom);
+		dailyTtotalAPI 	= parseInt(dataset[dataset.length - 1].event_api);
+
+		document.getElementById('totalWebDaily').innerHTML = numberWithCommas(dailyTotalWeb);
+		document.getElementById('totalf1Daily').innerHTML = numberWithCommas(dailyTtotalf1);
+		document.getElementById('totalCustomDaily').innerHTML = numberWithCommas(dailyTtotalCustom);
+		document.getElementById('totalAPIDaily').innerHTML = numberWithCommas(dailyTtotalAPI);
+	}
+
+	function getMonthlyTotal() {
+		document.getElementById('totalWebMonthly').innerHTML = numberWithCommas(monthlyTotalWeb);
+		document.getElementById('totalf1Monthly').innerHTML = numberWithCommas(monthlyTtotalf1);
+		document.getElementById('totalCustomMonthly').innerHTML = numberWithCommas(monthlyTtotalCustom);
+		document.getElementById('totalAPIMonthly').innerHTML = numberWithCommas(monthlyTtotalAPI);
+	}
+
+	getDailyTotal();
+	getMonthlyTotal();
+
+	var xData = ["web","f1","custom","api"];
+
+	var margin = {top: 10, right: 30, bottom: 50, left: 70},
+		width = parseInt(d3.select("#chart").style("width")) - margin.left - margin.right,
+		height = parseInt(d3.select("#chart").style("height")) - margin.top - margin.bottom;
+
+	var x = d3.scale.ordinal()
+	        .rangeRoundBands([0, width], .15);
+
+	var y = d3.scale.linear()
+	        .rangeRound([height, 0]);
+
+	var color = d3.scale.category20c();
+
+	var line = d3.svg.line()
+	    .interpolate("basis")
+	    .x(function(d) { return x(d.date); })
+	    .y(function(d) { return y(d.average); });
+
+	var xAxis = d3.svg.axis()
+	        .scale(x)
+	        .orient("bottom")
+	        .ticks(6);
+
+	var yAxis = d3.svg.axis()
+	    .scale(y)
+	    .orient("left")
+	    .tickPadding(10)
+	    .tickFormat(d3.format(".2s"));
+
+	var svg = d3.select("#chart").append("svg")
+	        .attr("width", width + margin.left + margin.right)
+	        .attr("height", height + margin.top + margin.bottom)
+	        .append("g")
+	        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	var dataIntermediate = xData.map(function (c) {
+	    return data.map(function (d) {
+	    	return {x: d.date, y: d[c]};
+	    });
+	});
+
+	var dataStackLayout = d3.layout.stack()(dataIntermediate);
+
+	x.domain(dataStackLayout[0].map(function (d) { return d.x;}));
+
+	y.domain([0,
+	    d3.max(dataStackLayout[dataStackLayout.length - 1],
+	            function (d) { return d.y0 + d.y;})
+	    ])
+	  .nice();
+
+	svg.append("g")
+	        .attr("class", "axis")
+	        .style("fill", "#00364d")
+	    	.attr("transform", "translate(" + 0 + ",0)")
+	    	.attr("opacity", 0.7)
+	    	.call(yAxis);
+
+	var layer = svg.selectAll(".stack")
+	        .data(dataStackLayout)
+	        .enter().append("g")
+	        .attr("class", "stack")
+	        .attr("opacity", 1)
+	        .style("fill", function (d, i) {
+	        	var colorString = '';
+	        	var colorRange = ["#3182bd", "#e6550d", "#31a354", "#756bb1"];
+	            return colorRange[i];
+	        });
+
+	layer.selectAll("rect")
+	        .data(function (d) {
+	            return d;
+	        })
+	        .enter().append("rect")
+	        .attr("x", function (d) {
+	            return x(d.x);
+	        })
+	        .attr("y", function (d) {
+	            return y(d.y + d.y0);
+	        })
+	        .attr("height", function (d) {
+	            return y(d.y0) - y(d.y + d.y0);
+	        })
+	        .attr("width", x.rangeBand());
+
+	svg.append("path")
+	      .datum(data)
+	      .attr("class", "line")
+	      .attr("stroke", "#37474F")
+	      .attr("stroke-width", 5)
+	      .attr("opacity", 0.5)
+	      .attr("transform", "translate(10,0)")
+	      .attr("d", line);
+
+	svg.append("g")
+	        .attr("class", "axis")
+	        .attr("transform", "translate(0," + height + ")")
+	        .attr("opacity", 0.7)
+	        .call(xAxis)
+	        .selectAll("text")
+	        .style("fill", function (d, i) {
+	    		var color = "#00364d";
+	    		if(width < 900){
+	    			color = "#ffffff"
+	    		}
+	            return color ;
+	        })
+	        .style("font-size", function (d, i) {
+	    		var size = "12px";
+	    		if(width < 900){
+	    			size = "18px";
+	    		}
+	            return size ;
+	        })
+	        .style("text-anchor", "end")
+	    	.attr("transform", function (d, i) {
+	    		var angle = -30;
+	    		if(width < 900){
+	    			angle = -90
+	    		}
+	            return 'rotate(' + angle +')';
+	        })
+	    	.attr("x", function (d, i) {
+	    		var xOffset = 0;
+	    		if(width < 900){
+	    			xOffset = 50
+	    		}
+	            return xOffset ;
+	        })
+	    	.attr("y", function (d, i) {
+	    		var yOffset = 10;
+	    		if(width < 900){
+	    			yOffset = -7
+	    		}
+	            return yOffset ;
+	        })
+	    	.text(function (d) {
+			     if(d.length > 5)
+			         return d.substring(5,d.length).replace('-','.');
+			     else
+			         return d;
+			 });
+
+	window.switchIn = function () {
+	    $('#chartContainer1').fadeToggle(function() {
+	        $('#chartContainer2').fadeToggle(function() {
+	            setTimeout(function() {window.switchOut();}, 5000);
+	        });
+	    });
+	}
+
+	window.switchOut = function () {
+	    $('#chartContainer2').fadeToggle(function() {
+	        $('#chartContainer1').fadeToggle(function() {
+	            setTimeout(function() {window.switchIn();}, 5000);
+	        });
+	    });
+	}
+
+	setTimeout(function() {window.switchIn();}, 5000)
+</script>
 </body>
 </html>
