@@ -33,7 +33,7 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 40%;
-	display:none
+	display:none;
 }
 
 #chart {
@@ -87,7 +87,7 @@ path.line
 
 .dailyColumn {
 	text-align: center;
-	max-width: 25%;
+	max-width: 50%;
 }
 
 .columnTitle {
@@ -98,7 +98,7 @@ path.line
 	color:ccc;
 	padding-top: 10px;
 	text-align: left;
-	font-size: 1.5em;
+	font-size: 1.3vw;
 }
 
 th { font-family: 'Lato',sans-serif; font-weight: 300; text-align: left; color:rgba(255,255,255,.3); }
@@ -162,21 +162,15 @@ tbody tr:nth-child(odd) {
 <body>
 <div id="chartContainer1">
 	<div class="legend">
-		<div class="legendItem" style="color:#3182bd">Monthly Total Web<br><span class="itemTotal" id="totalWebMonthly"></span></div>
-		<div class="legendItem" style="color:#e6550d">Monthly Total F1<br><span class="itemTotal" id="totalf1Monthly"></span></div>
-		<div class="legendItem" style="color:#31a354">Monthly Total Custom<br><span class="itemTotal" id="totalCustomMonthly"></span></div>
-		<div class="legendItem" style="color:#b1abd3">Monthly Total API<br><span class="itemTotal" id="totalAPIMonthly"></span></div>
+		<div class="legendItem" style="color:#3182bd">Today's Total Web<br><span class="itemTotal" id="totalWebMonthly"></span></div>
+		<div class="legendItem" style="color:#e6550d">Today's Total F1<br><span class="itemTotal" id="totalf1Monthly"></span></div>
+		<div class="legendItem" style="color:#31a354">Today's Total Custom<br><span class="itemTotal" id="totalCustomMonthly"></span></div>
+		<div class="legendItem" style="color:#b1abd3">Today's Total API<br><span class="itemTotal" id="totalAPIMonthly"></span></div>
 	</div>
 	<svg id="chart" ></svg>
 </div>
 
 <div id="chartContainer2">
-	<!-- <div class="legend">
-		<div class="legendItem" style="color:#3182bd">Daily Total Web<br><span class="itemTotalLarge" id="totalWebDaily"></span></div>
-		<div class="legendItem" style="color:#e6550d">Daily Total F1<br><span class="itemTotalLarge" id="totalf1Daily"></span></div>
-		<div class="legendItem" style="color:#31a354">Daily Total Custom<br><span class="itemTotalLarge" id="totalCustomDaily"></span></div>
-		<div class="legendItem" style="color:#b1abd3">Daily Total API<br><span class="itemTotalLarge" id="totalAPIDaily"></span></div>
-	</div> -->
 
 	<div class="dailyColumnsContainer">
 		<div class="dailyColumn" >
@@ -207,9 +201,6 @@ tbody tr:nth-child(odd) {
 			<div class="columnTable" id="webTable4"></div>
 		</div>
 	</div>
-
-
-
 </div>
 
 <script>
@@ -241,12 +232,13 @@ tbody tr:nth-child(odd) {
 		dataobj.average = parseInt(dataset[i].daily_average);
 		data.push(dataobj);
 
-		monthlyTotalWeb 	+= parseInt(dataset[i].event_web);
-		monthlyTtotalf1 	+= parseInt(dataset[i].event_f1);
-		monthlyTtotalCustom += parseInt(dataset[i].event_custom);
-		monthlyTtotalAPI 	+= parseInt(dataset[i].event_api);
 
 	}
+
+	monthlyTotalWeb 	+= parseInt(dataset[dataset.length - 1].event_web);
+	monthlyTtotalf1 	+= parseInt(dataset[dataset.length - 1].event_f1);
+	monthlyTtotalCustom += parseInt(dataset[dataset.length - 1].event_custom);
+	monthlyTtotalAPI 	+= parseInt(dataset[dataset.length - 1].event_api);
 
 	function numberWithCommas(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -276,15 +268,13 @@ tbody tr:nth-child(odd) {
 
 	var xData = ["web","f1","custom","api"];
 
-	var margin = {top: 10, right: 30, bottom: 50, left: 70},
+	var margin = {top: 10, right: 30, bottom: 80, left: 70},
 		width = parseInt(d3.select("#chart").style("width")) - margin.left - margin.right,
 		height = parseInt(d3.select("#chart").style("height")) - margin.top - margin.bottom;
 
-	var x = d3.scale.ordinal()
-	        .rangeRoundBands([0, width], .15);
+	var x = d3.scale.ordinal().rangeRoundBands([0, width], .15);
 
-	var y = d3.scale.linear()
-	        .rangeRound([height, 0]);
+	var y = d3.scale.linear().rangeRound([height, 0]);
 
 	var color = d3.scale.category20c();
 
@@ -427,16 +417,16 @@ tbody tr:nth-child(odd) {
 		// the table rows, typically loaded from data file using d3.csv
 	    var movies = [
 	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.2 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.5 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 3.1 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 1.1 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.1 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.4 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.1 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -2.1 },
-	        { siteId: "chem.libretexts.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.4 }
+	        { siteId: "chem.anothername.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
+	        { siteId: "chem.lrealllyreallylongsitename.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.3 },
+	        { siteId: "short.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.5 },
+	        { siteId: "midntouch.com", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 3.1 },
+	        { siteId: "remington.org", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 1.1 },
+	        { siteId: "whirlpool.com", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.1 },
+	        { siteId: "google.com/suppot", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.4 },
+	        { siteId: "http://blahblah.com/support", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -0.1 },
+	        { siteId: "someRandomWebsite.me", request_total: 2371208, percent_total: 75, budget: 6000000, rating: -2.1 },
+	        { siteId: "stackoverflow.com", request_total: 2371208, percent_total: 75, budget: 6000000, rating: 0.4 }
 	    ];
 
 	    // column definitions
@@ -496,7 +486,6 @@ tbody tr:nth-child(odd) {
 	    function signNumber() {
 	        return function(n) { var nn = n > 0 ? '+' + n : n ;  return nn; };
 	    }
-
 	}
 
 	drawColumnTable('webTable');
